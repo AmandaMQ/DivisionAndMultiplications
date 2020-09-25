@@ -7,174 +7,169 @@
 		<link rel="apple-touch-icon" href="/single-page-icon.png">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		
-		
 		<style>
 		
-      body, html {
-        background-color: black;
-        color: white;
-        font: normal 1rem monospace;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
-      .Text {
-          text-align: center;
-      }
-      #Holder {
-          display: grid;
-          grid-template-rows: 5.8rem 5.8rem;
-          grid-template-columns: 50% 50%;
-          margin: 0.5rem 0.5rem;
-      }
-      #Holder .Entry {
-          box-sizing: border-box;
-          border: 0.2rem solid #ccc;
-          display: grid;
-          grid-template-columns: 3rem auto 2rem;
-          margin: 0.25rem;
-          overflow: hidden;
-          background-color: #ccc;
-          color: #000;
-      }
-      #Holder .Active {
-          background-color: orange !important;
-          border-color: orange;
-      }
-      #Holder .Label {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 1.4rem;
-          font-weight: bold;
-      }
-      #Holder .Value {
-          overflow: hidden;
-      }
-      #Holder .Value .Face {
-          box-sizing: border-box;
-          padding: 0 0.5rem;
-          display: flex;
-          align-items: center;
-          font-size: 2rem;
-          height: 3rem;
-          background-color: #333;
-          box-shadow: 0 0.5rem 1rem #000 inset;
-          color: lime;
-      }
-      #Holder .Value .Real {
-          box-sizing: border-box;
-          padding: 0 0.5rem;
-          color: fuchsia;
-          height: 1.8rem;
-          display: flex;
-          align-items: center;
-      }
-      #Holder .Add {
-          font-size: 2rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-weight: bold;
-          color: red;
-      }
+		      body, html {
+			background-color: black;
+			color: white;
+			font: normal 1rem monospace;
+			padding: 0;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+		      }
+		      .Text {
+			  text-align: center;
+		      }
+		      #Holder {
+			  display: grid;
+			  grid-template-rows: 5.8rem 5.8rem;
+			  grid-template-columns: 50% 50%;
+			  margin: 0.5rem 0.5rem;
+		      }
+		      #Holder .Entry {
+			  box-sizing: border-box;
+			  border: 0.2rem solid #ccc;
+			  display: grid;
+			  grid-template-columns: 3rem auto 2rem;
+			  margin: 0.25rem;
+			  overflow: hidden;
+			  background-color: #ccc;
+			  color: #000;
+		      }
+		      #Holder .Active {
+			  background-color: orange !important;
+			  border-color: orange;
+		      }
+		      #Holder .Label {
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+			  font-size: 1.4rem;
+			  font-weight: bold;
+		      }
+		      #Holder .Value {
+			  overflow: hidden;
+		      }
+		      #Holder .Value .Face {
+			  box-sizing: border-box;
+			  padding: 0 0.5rem;
+			  display: flex;
+			  align-items: center;
+			  font-size: 2rem;
+			  height: 3rem;
+			  background-color: #333;
+			  box-shadow: 0 0.5rem 1rem #000 inset;
+			  color: lime;
+		      }
+		      #Holder .Value .Real {
+			  box-sizing: border-box;
+			  padding: 0 0.5rem;
+			  color: fuchsia;
+			  height: 1.8rem;
+			  display: flex;
+			  align-items: center;
+		      }
+		      #Holder .Add {
+			  font-size: 2rem;
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+			  font-weight: bold;
+			  color: red;
+		      }
+		      .Results {
+			  box-sizing: border-box;
+			  padding: 1rem 0.5rem;
+		      }
+		      .Results .Result {
+			  display: grid;
+			  grid-template-columns: 20rem auto;
+			  height: 2.4rem;
+			  background-color: green;
+			  margin-bottom: 0.5rem;
+		      }
+		      .Results .Result .Label {
+			  box-sizing: border-box;
+			  padding: 0 0.5rem;
+			  display: flex;
+			  align-items: center;
+			  font-size: 1.4rem;
+		      }
+		      .Results .Result .Value {
+			  background-color: rgba(0,0,0,0.75);
+			  box-sizing: border-box;
+			  padding: 0 0.5rem;
+			  overflow: hidden;
+			  display: flex;
+			  align-items: center;
+			  font-size: 1.6rem;
+			  color: yellow;
+		      }
+		      .Results .Result .Value span {
+			  font-size: smaller;
+			  opacity: 0.75;
+		      }
+		      #Numpad {
+			  width: 100%;
+			  background-color: #333;
+			  display: grid;
+			  grid-template-columns: 25% 75%;
+			  height: 20rem;
+			  box-sizing: border-box;
+			  padding: 0.5rem;
+		      }
+		      #Numpad .Keys {
+			  display: grid;
+		      }
+		      #Numpad .TopKeys {
+			  grid-template-rows: 25% 25% 25% 25%;
+			  grid-template-columns: 33% 33% 33%;
+		      }
+		      #Numpad .OtherKeys {
+			  grid-template-rows: 33% 33% 33%;
+		      }
+		      #Numpad .Keys .Key {
+			  box-sizing: border-box;
+			  border: 0.2rem solid rgba(0,0,0,0.25);
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+			  font-size: 2rem;
+			  font-weight: bold;
+			  margin: 0.25rem;
+			  border-radius: 0.4rem;
+			  cursor: pointer;
+		      }
+		      #Numpad .TopKeys .Key {
+			  background-color: #146114;
+		      }
+		      #Numpad .TopKeys .KeyY {
+			  background-color: #191982;
+		      }
+		      #Numpad .TopKeys .KeyZ {
+			  background-color: #717171;
+		      }
+		      #Numpad .OtherKeys .KeyK {
+			  background-color: #b17c1c;
+		      }
+		      #Numpad .OtherKeys .KeyM {
+			  background-color: #981111;
+		      }
+		      #Numpad .OtherKeys .KeyX {
+			  background-color: #630c63;
+		      }
 
-      .Results {
-          box-sizing: border-box;
-          padding: 1rem 0.5rem;
-      }
-      .Results .Result {
-          display: grid;
-          grid-template-columns: 20rem auto;
-          height: 2.4rem;
-          background-color: green;
-          margin-bottom: 0.5rem;
-      }
-      .Results .Result .Label {
-          box-sizing: border-box;
-          padding: 0 0.5rem;
-          display: flex;
-          align-items: center;
-          font-size: 1.4rem;
-      }
-      .Results .Result .Value {
-          background-color: rgba(0,0,0,0.75);
-          box-sizing: border-box;
-          padding: 0 0.5rem;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          font-size: 1.6rem;
-          color: yellow;
-      }
-      .Results .Result .Value span {
-          font-size: smaller;
-          opacity: 0.75;
-      }
-
-
-
-      #Numpad {
-          width: 100%;
-          background-color: #333;
-          display: grid;
-          grid-template-columns: 25% 75%;
-          height: 20rem;
-          box-sizing: border-box;
-          padding: 0.5rem;
-      }
-      #Numpad .Keys {
-          display: grid;
-      }
-      #Numpad .TopKeys {
-          grid-template-rows: 25% 25% 25% 25%;
-          grid-template-columns: 33% 33% 33%;
-      }
-      #Numpad .OtherKeys {
-          grid-template-rows: 33% 33% 33%;
-      }
-      #Numpad .Keys .Key {
-          box-sizing: border-box;
-          border: 0.2rem solid rgba(0,0,0,0.25);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 2rem;
-          font-weight: bold;
-          margin: 0.25rem;
-          border-radius: 0.4rem;
-          cursor: pointer;
-      }
-      #Numpad .TopKeys .Key {
-          background-color: #146114;
-      }
-      #Numpad .TopKeys .KeyY {
-          background-color: #191982;
-      }
-      #Numpad .TopKeys .KeyZ {
-          background-color: #717171;
-      }
-      #Numpad .OtherKeys .KeyK {
-          background-color: #b17c1c;
-      }
-      #Numpad .OtherKeys .KeyM {
-          background-color: #981111;
-      }
-      #Numpad .OtherKeys .KeyX {
-          background-color: #630c63;
-      }
-
-      #MaxBulletsPerSecond { background-color: #af1b1b }
-      #MaxCyclesPerMinute { background-color: #b73970 }
-      #RawDamagePerMagazine { background-color: #751f70 }
-      #DamagePerSecond { background-color: #2d2580 }
-      #RealDamagePerSecond { background-color: #1a677b }
-      #RealDamagePerMinute { background-color: #29866a }
-      #FullDischargeTime { background-color: #3b651e }
-      #FullCycle { background-color: #8b9e31 }
-      #SecondsPerMinuteReloading { background-color: #a5851f }
-      #SecondsPerMinuteFiring { background-color: #82351b }
+		      #MaxBulletsPerSecond { background-color: #af1b1b }
+		      #MaxCyclesPerMinute { background-color: #b73970 }
+		      #RawDamagePerMagazine { background-color: #751f70 }
+		      #DamagePerSecond { background-color: #2d2580 }
+		      #RealDamagePerSecond { background-color: #1a677b }
+		      #RealDamagePerMinute { background-color: #29866a }
+		      #FullDischargeTime { background-color: #3b651e }
+		      #FullCycle { background-color: #8b9e31 }
+		      #SecondsPerMinuteReloading { background-color: #a5851f }
+		      #SecondsPerMinuteFiring { background-color: #82351b }
 
 		</style>
 		
@@ -320,8 +315,7 @@
 				$("#FullCycle .Value").html(Human(FullCycle, false) +"<span>s</span>");
 				$("#SecondsPerMinuteReloading .Value").html(Human(SecondsPerMinuteReloading, false) +"<span>s</span>");
 				$("#SecondsPerMinuteFiring .Value").html(Human(SecondsPerMinuteFiring, false) +"<span>s</span>");
-				
-			
+					
 			}
 			
 			var Parse = function(CallerID){
@@ -349,15 +343,10 @@
 				else return Value;
 			
 			}
-			
-			
 
 		</script>
 		
-	</head>
-	
-	
-	
+	</head>	
 	<body>
 	
 		<div class="Results">
