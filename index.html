@@ -1,0 +1,388 @@
+<html>
+	<head>
+		<title>The Division (and The Multiplications)</title>
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0"/>
+		<meta name="apple-mobile-web-app-title" content="The Division (and The Multiplication)">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="apple-touch-icon" href="/single-page-icon.png">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		
+		
+		<style>
+		
+      body, html {
+        background-color: black;
+        color: white;
+        font: normal 1rem monospace;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .Text {
+          text-align: center;
+      }
+      #Holder {
+          display: grid;
+          grid-template-rows: 5.8rem 5.8rem;
+          grid-template-columns: 50% 50%;
+          margin: 0.5rem 0.5rem;
+      }
+      #Holder .Entry {
+          box-sizing: border-box;
+          border: 0.2rem solid #ccc;
+          display: grid;
+          grid-template-columns: 3rem auto 2rem;
+          margin: 0.25rem;
+          overflow: hidden;
+          background-color: #ccc;
+          color: #000;
+      }
+      #Holder .Active {
+          background-color: orange !important;
+          border-color: orange;
+      }
+      #Holder .Label {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.4rem;
+          font-weight: bold;
+      }
+      #Holder .Value {
+          overflow: hidden;
+      }
+      #Holder .Value .Face {
+          box-sizing: border-box;
+          padding: 0 0.5rem;
+          display: flex;
+          align-items: center;
+          font-size: 2rem;
+          height: 3rem;
+          background-color: #333;
+          box-shadow: 0 0.5rem 1rem #000 inset;
+          color: lime;
+      }
+      #Holder .Value .Real {
+          box-sizing: border-box;
+          padding: 0 0.5rem;
+          color: fuchsia;
+          height: 1.8rem;
+          display: flex;
+          align-items: center;
+      }
+      #Holder .Add {
+          font-size: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-weight: bold;
+          color: red;
+      }
+
+      .Results {
+          box-sizing: border-box;
+          padding: 1rem 0.5rem;
+      }
+      .Results .Result {
+          display: grid;
+          grid-template-columns: 20rem auto;
+          height: 2.4rem;
+          background-color: green;
+          margin-bottom: 0.5rem;
+      }
+      .Results .Result .Label {
+          box-sizing: border-box;
+          padding: 0 0.5rem;
+          display: flex;
+          align-items: center;
+          font-size: 1.4rem;
+      }
+      .Results .Result .Value {
+          background-color: rgba(0,0,0,0.75);
+          box-sizing: border-box;
+          padding: 0 0.5rem;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          font-size: 1.6rem;
+          color: yellow;
+      }
+      .Results .Result .Value span {
+          font-size: smaller;
+          opacity: 0.75;
+      }
+
+
+
+      #Numpad {
+          width: 100%;
+          background-color: #333;
+          display: grid;
+          grid-template-columns: 25% 75%;
+          height: 20rem;
+          box-sizing: border-box;
+          padding: 0.5rem;
+      }
+      #Numpad .Keys {
+          display: grid;
+      }
+      #Numpad .TopKeys {
+          grid-template-rows: 25% 25% 25% 25%;
+          grid-template-columns: 33% 33% 33%;
+      }
+      #Numpad .OtherKeys {
+          grid-template-rows: 33% 33% 33%;
+      }
+      #Numpad .Keys .Key {
+          box-sizing: border-box;
+          border: 0.2rem solid rgba(0,0,0,0.25);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 2rem;
+          font-weight: bold;
+          margin: 0.25rem;
+          border-radius: 0.4rem;
+          cursor: pointer;
+      }
+      #Numpad .TopKeys .Key {
+          background-color: #146114;
+      }
+      #Numpad .TopKeys .KeyY {
+          background-color: #191982;
+      }
+      #Numpad .TopKeys .KeyZ {
+          background-color: #717171;
+      }
+      #Numpad .OtherKeys .KeyK {
+          background-color: #b17c1c;
+      }
+      #Numpad .OtherKeys .KeyM {
+          background-color: #981111;
+      }
+      #Numpad .OtherKeys .KeyX {
+          background-color: #630c63;
+      }
+
+      #MaxBulletsPerSecond { background-color: #af1b1b }
+      #MaxCyclesPerMinute { background-color: #b73970 }
+      #RawDamagePerMagazine { background-color: #751f70 }
+      #DamagePerSecond { background-color: #2d2580 }
+      #RealDamagePerSecond { background-color: #1a677b }
+      #RealDamagePerMinute { background-color: #29866a }
+      #FullDischargeTime { background-color: #3b651e }
+      #FullCycle { background-color: #8b9e31 }
+      #SecondsPerMinuteReloading { background-color: #a5851f }
+      #SecondsPerMinuteFiring { background-color: #82351b }
+
+		</style>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+		
+			$(document).ready(function(){
+				
+				$("#Holder .Entry").on("click", function(){
+					var CallerID = $(this).prop("id");
+					Numpad(CallerID);
+				});
+				
+			});
+						
+			var Numpad = function(CallerID){
+			
+				$("#Numpad").remove();
+				$("#Holder .Entry").removeClass("Active");
+				$("#"+ CallerID).addClass("Active");
+				
+				$("body").append(
+					"<div id=\"Numpad\">"+
+						"<div class=\"Keys OtherKeys\">"+							
+							"<div class=\"Key KeyK\" data-val=\"K\">K</div>"+
+							"<div class=\"Key KeyM\" data-val=\"M\">M</div>"+
+							"<div class=\"Key KeyX\" data-val=\"*\">🡇</div>"+
+						"</div>"+
+						"<div class=\"Keys TopKeys\">"+
+							"<div class=\"Key\" data-val=\"1\">1</div>"+
+							"<div class=\"Key\" data-val=\"2\">2</div>"+
+							"<div class=\"Key\" data-val=\"3\">3</div>"+
+							"<div class=\"Key\" data-val=\"4\">4</div>"+
+							"<div class=\"Key\" data-val=\"5\">5</div>"+
+							"<div class=\"Key\" data-val=\"6\">6</div>"+
+							"<div class=\"Key\" data-val=\"7\">7</div>"+
+							"<div class=\"Key\" data-val=\"8\">8</div>"+
+							"<div class=\"Key\" data-val=\"9\">9</div>"+
+							"<div class=\"Key KeyY\" data-val=\".\">.</div>"+
+							"<div class=\"Key\" data-val=\"0\">0</div>"+
+							"<div class=\"Key KeyZ\" data-val=\"-\">&#8656;</div>"+
+						"</div>"+
+					"</div>"
+				);
+				
+				if ( CallerID != "DamagePerBullet" ) $("#Numpad .OtherKeys .KeyK").css("opacity", 0), $("#Numpad .OtherKeys .KeyM").css("opacity", 0);
+				if ( CallerID == "RoundsPerMinute" || CallerID == "Magazine" ) $("#Numpad .TopKeys .KeyY").css("opacity", 0);
+				
+				var Multiplier = null;
+				
+				$("#Numpad .Keys .Key").on("click", function(){
+				
+					var Key = $(this).data("val");
+					var Value = String($("#"+ CallerID +" .Value .Face").text());
+					
+					if ( Value === "0" ) Value = "";
+
+					if ( Key == "M" ){
+						if ( CallerID != "DamagePerBullet" ) return;
+						if ( Multiplier == "M" ) Multiplier = null;
+						else Multiplier = "M";
+					} else if ( Key == "K" ){
+						if ( CallerID != "DamagePerBullet" ) return;
+						if ( Multiplier == "K" ) Multiplier = null;
+						else Multiplier = "K";
+					} else if ( Key == "-" ){
+						Value = Value.substr(0, Value.length-1);
+					} else if ( Key == "." ){
+						if ( CallerID == "Magazine" || CallerID == "RoundsPerMinute" ) return;
+						if ( Value.indexOf(".") > -1 ) return;
+						else Value += ".";
+					} else if ( Key == "*" ){
+						$("#Numpad").remove();
+						$("#Holder .Entry").removeClass("Active");
+						return;
+					} else {
+						Value += Key;
+					}
+					
+					if ( Value.length == 0 ){
+						Multiplier = null;
+						if ( CallerID != "ReloadTime" ) $("#"+ CallerID +" .Add").text("");
+						$("#"+ CallerID +" .Value .Face").text(0);
+						$("#"+ CallerID +" .Value .Real").text(0);
+						Dodo();
+						return
+					};
+					
+					if ( CallerID == "ReloadTime" ){
+					
+						var RealValue = Value;
+					
+					} else {
+					
+						if ( Multiplier == null ) $("#"+ CallerID +" .Add").text("");
+						else $("#"+ CallerID +" .Add").text(Multiplier);
+						
+						var RealValue = parseFloat(Value);
+						if ( Multiplier == "M" ) RealValue *= 1000000;
+						else if ( Multiplier == "K" ) RealValue *= 1000;
+					
+					}
+					
+					$("#"+ CallerID +" .Value .Face").text(Value);
+					$("#"+ CallerID +" .Value .Real").text(parseFloat(RealValue));
+					Dodo();
+				
+				});
+				
+				$("html, body").animate({scrollTop:$(document).height()}, 0);
+			
+			}
+			
+			var Dodo = function(){
+			
+				var DamagePerBullet = Parse("DamagePerBullet");
+				var RoundsPerMinute = Parse("RoundsPerMinute");
+				var Magazine = Parse("Magazine");
+				var ReloadTime = Parse("ReloadTime");
+				
+				var MaxBulletsPerSecond = ( RoundsPerMinute / 60 );
+				var FullDischargeTime = ( Magazine / RoundsPerMinute ) * 60;
+				var FullCycle = FullDischargeTime + ReloadTime;
+				var MaxCyclesPerMinute = 60 / FullCycle;
+				var SecondsPerMinuteReloading = ( ReloadTime * 60 ) / FullCycle;
+				var SecondsPerMinuteFiring = 60 - SecondsPerMinuteReloading;
+				
+				var DamagePerSecond = MaxBulletsPerSecond * DamagePerBullet;
+				var RawDamagePerMagazine = DamagePerBullet * Magazine;
+				
+				var RealDamagePerMinute = SecondsPerMinuteFiring * DamagePerSecond;
+				var RealDamagePerSecond = RealDamagePerMinute / 60;
+				
+				$("#MaxBulletsPerSecond .Value").html(Human(MaxBulletsPerSecond));
+				$("#MaxCyclesPerMinute .Value").html(Human(MaxCyclesPerMinute));
+				$("#RawDamagePerMagazine .Value").html(Human(RawDamagePerMagazine));
+				$("#DamagePerSecond .Value").html(Human(DamagePerSecond));
+				$("#RealDamagePerSecond .Value").html(Human(RealDamagePerSecond));
+				$("#RealDamagePerMinute .Value").html(Human(RealDamagePerMinute));
+				
+				$("#FullDischargeTime .Value").html(Human(FullDischargeTime, false) +"<span>s</span>");
+				$("#FullCycle .Value").html(Human(FullCycle, false) +"<span>s</span>");
+				$("#SecondsPerMinuteReloading .Value").html(Human(SecondsPerMinuteReloading, false) +"<span>s</span>");
+				$("#SecondsPerMinuteFiring .Value").html(Human(SecondsPerMinuteFiring, false) +"<span>s</span>");
+				
+			
+			}
+			
+			var Parse = function(CallerID){
+			
+				var Value = $("#"+ CallerID +" .Value .Real").html();
+				return parseFloat(Value);
+			
+			}
+			
+			var Human = function(Value, AddSuffix = true){
+			
+				var Suffix = null;
+				
+				if ( Value >= 1000000 ){
+					Value /= 1000000;
+					if ( AddSuffix ) Suffix = "<span>M</span>";
+				} else if ( Value >= 1000 ){
+					Value /= 1000;
+					if ( AddSuffix ) Suffix = "<span>K</span>";
+				}
+				
+				if ( String(Value).indexOf(".") > -1 ) Value = Value.toFixed(1);
+				
+				if ( AddSuffix && Suffix != null ) return Value + Suffix;
+				else return Value;
+			
+			}
+			
+			
+
+		</script>
+		
+	</head>
+	
+	
+	
+	<body>
+	
+		<div class="Results">
+		
+			<div class="Result" id="SecondsPerMinuteReloading"><div class="Label">SECS PER MIN RELOADING</div><div class="Value">0<span>s</span></div></div>
+			<div class="Result" id="SecondsPerMinuteFiring"><div class="Label">SECS PER MIN FIRING</div><div class="Value">0<span>s</span></div></div>
+			<div class="Result" id="FullDischargeTime"><div class="Label">MAG FULL TO EMPTY</div><div class="Value">0<span>s</span></div></div>
+			<div class="Result" id="FullCycle"><div class="Label">UNLOAD RELOAD (CYCLE)</div><div class="Value">0<span>s</span></div></div>
+			<div class="Result" id="MaxCyclesPerMinute"><div class="Label">MAX CYCLES / MIN</div><div class="Value">0</div></div>
+			<div class="Result" id="RawDamagePerMagazine"><div class="Label">RAW DMG / MAG</div><div class="Value">0</div></div>
+			<div class="Result" id="MaxBulletsPerSecond"><div class="Label">MAX ROUNDS / SEC</div><div class="Value">0</div></div>
+			<div class="Result" id="DamagePerSecond"><div class="Label">RAW DMG / SEC</div><div class="Value">0</div></div>
+			<div class="Result" id="RealDamagePerSecond"><div class="Label">AVERAGE DMG / SEC</div><div class="Value">0</div></div>
+			<div class="Result" id="RealDamagePerMinute"><div class="Label">AVERAGE DMG / MIN</div><div class="Value">0</div></div>
+			
+		</div>
+		
+		<div class="Text">Enter values below.</div>
+		
+		<div id="Holder">
+			<div class="Entry" id="DamagePerBullet"><div class="Label">DMG</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
+			<div class="Entry" id="RoundsPerMinute"><div class="Label">RPM</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
+			<div class="Entry" id="Magazine"><div class="Label">MAG</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
+			<div class="Entry" id="ReloadTime"><div class="Label">RLT</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add">s</div></div>
+		</div>
+	
+	</body>
+</html>
