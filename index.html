@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
+
 	<head>
-		<title>The Division (and The Multiplications)</title>
+	
+		<title>The Division (and The Multiplication)</title>
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0"/>
 		<meta name="apple-mobile-web-app-title" content="The Division (and The Multiplication)">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -8,176 +11,387 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 		
 		<style>
-		
-		      body, html {
-			background-color: black;
-			color: white;
-			font: normal 1rem monospace;
-			padding: 0;
-			margin: 0;
-			width: 100%;
-			height: 100%;
-		      }
-		      .Text {
-			  text-align: center;
-		      }
-		      #Holder {
-			  display: grid;
-			  grid-template-rows: 5.8rem 5.8rem;
-			  grid-template-columns: 50% 50%;
-			  margin: 0.5rem 0.5rem;
-		      }
-		      #Holder .Entry {
-			  box-sizing: border-box;
-			  border: 0.2rem solid #ccc;
-			  display: grid;
-			  grid-template-columns: 3rem auto 2rem;
-			  margin: 0.25rem;
-			  overflow: hidden;
-			  background-color: #ccc;
-			  color: #000;
-		      }
-		      #Holder .Active {
-			  background-color: orange !important;
-			  border-color: orange;
-		      }
-		      #Holder .Label {
-			  display: flex;
-			  justify-content: center;
-			  align-items: center;
-			  font-size: 1.4rem;
-			  font-weight: bold;
-		      }
-		      #Holder .Value {
-			  overflow: hidden;
-		      }
-		      #Holder .Value .Face {
-			  box-sizing: border-box;
-			  padding: 0 0.5rem;
-			  display: flex;
-			  align-items: center;
-			  font-size: 2rem;
-			  height: 3rem;
-			  background-color: #333;
-			  box-shadow: 0 0.5rem 1rem #000 inset;
-			  color: lime;
-		      }
-		      #Holder .Value .Real {
-			  box-sizing: border-box;
-			  padding: 0 0.5rem;
-			  color: fuchsia;
-			  height: 1.8rem;
-			  display: flex;
-			  align-items: center;
-		      }
-		      #Holder .Add {
-			  font-size: 2rem;
-			  display: flex;
-			  justify-content: center;
-			  align-items: center;
-			  font-weight: bold;
-			  color: red;
-		      }
-		      .Results {
-			  box-sizing: border-box;
-			  padding: 1rem 0.5rem;
-		      }
-		      .Results .Result {
-			  display: grid;
-			  grid-template-columns: 20rem auto;
-			  height: 2.4rem;
-			  background-color: green;
-			  margin-bottom: 0.5rem;
-		      }
-		      .Results .Result .Label {
-			  box-sizing: border-box;
-			  padding: 0 0.5rem;
-			  display: flex;
-			  align-items: center;
-			  font-size: 1.4rem;
-		      }
-		      .Results .Result .Value {
-			  background-color: rgba(0,0,0,0.75);
-			  box-sizing: border-box;
-			  padding: 0 0.5rem;
-			  overflow: hidden;
-			  display: flex;
-			  align-items: center;
-			  font-size: 1.6rem;
-			  color: yellow;
-		      }
-		      .Results .Result .Value span {
-			  font-size: smaller;
-			  opacity: 0.75;
-		      }
-		      #Numpad {
-			  width: 100%;
-			  background-color: #333;
-			  display: grid;
-			  grid-template-columns: 25% 75%;
-			  height: 20rem;
-			  box-sizing: border-box;
-			  padding: 0.5rem;
-		      }
-		      #Numpad .Keys {
-			  display: grid;
-		      }
-		      #Numpad .TopKeys {
-			  grid-template-rows: 25% 25% 25% 25%;
-			  grid-template-columns: 33% 33% 33%;
-		      }
-		      #Numpad .OtherKeys {
-			  grid-template-rows: 33% 33% 33%;
-		      }
-		      #Numpad .Keys .Key {
-			  box-sizing: border-box;
-			  border: 0.2rem solid rgba(0,0,0,0.25);
-			  display: flex;
-			  justify-content: center;
-			  align-items: center;
-			  font-size: 2rem;
-			  font-weight: bold;
-			  margin: 0.25rem;
-			  border-radius: 0.4rem;
-			  cursor: pointer;
-		      }
-		      #Numpad .TopKeys .Key {
-			  background-color: #146114;
-		      }
-		      #Numpad .TopKeys .KeyY {
-			  background-color: #191982;
-		      }
-		      #Numpad .TopKeys .KeyZ {
-			  background-color: #717171;
-		      }
-		      #Numpad .OtherKeys .KeyK {
-			  background-color: #b17c1c;
-		      }
-		      #Numpad .OtherKeys .KeyM {
-			  background-color: #981111;
-		      }
-		      #Numpad .OtherKeys .KeyX {
-			  background-color: #630c63;
-		      }
+					
+			body, html {
+				background-color: black;
+				color: white;
+				font: normal 1rem monospace;
+				padding: 0;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+				text-rendering: geometricprecision;
+				user-select: none;
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				-moz-appearance: none;
+				-webkit-appearance: none;
+				appearance: none;
+			}
+			.Text {
+				text-align: center;
+			}
+			#Holder {
+				display: grid;
+				grid-template-rows: 5.8rem 5.8rem;
+				grid-template-columns: 50% 50%;
+				margin: 0.5rem 0.5rem;
+			}
+			#Holder .Entry {
+				box-sizing: border-box;
+				border: 0.2rem solid #ccc;
+				display: grid;
+				grid-template-columns: 3rem auto 2rem;
+				margin: 0.25rem;
+				overflow: hidden;
+				background-color: #ccc;
+				color: #000;
+			}
+			#Holder .Active {
+				background-color: orange !important;
+				border-color: orange;
+			}
+			#Holder .Label {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 1.4rem;
+				font-weight: bold;
+			}
+			#Holder .Value {
+				overflow: hidden;
+			}
+			#Holder .Value .Face {
+				box-sizing: border-box;
+				padding: 0 0.5rem;
+				display: flex;
+				align-items: center;
+				font-size: 2rem;
+				height: 3rem;
+				background-color: #333;
+				box-shadow: 0 0.5rem 1rem #000 inset;
+				color: lime;
+			}
+			#Holder .Value .Real {
+				box-sizing: border-box;
+				padding: 0 0.5rem;
+				color: fuchsia;
+				height: 1.8rem;
+				display: flex;
+				align-items: center;
+			}
+			#Holder .Add {
+				font-size: 2rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-weight: bold;
+				color: red;
+			}
 
-		      #MaxBulletsPerSecond { background-color: #af1b1b }
-		      #MaxCyclesPerMinute { background-color: #b73970 }
-		      #RawDamagePerMagazine { background-color: #751f70 }
-		      #DamagePerSecond { background-color: #2d2580 }
-		      #RealDamagePerSecond { background-color: #1a677b }
-		      #RealDamagePerMinute { background-color: #29866a }
-		      #FullDischargeTime { background-color: #3b651e }
-		      #FullCycle { background-color: #8b9e31 }
-		      #SecondsPerMinuteReloading { background-color: #a5851f }
-		      #SecondsPerMinuteFiring { background-color: #82351b }
-
+			.Results {
+				box-sizing: border-box;
+				padding: 1rem 0.5rem;
+			}
+			.Results .Result {
+				display: grid;
+				grid-template-columns: auto 8rem;
+				height: 2.4rem;
+				background-color: green;
+				margin-bottom: 0.5rem;
+			}
+			.Results .Result .Label {
+				box-sizing: border-box;
+				padding: 0 0.5rem;
+				display: flex;
+				align-items: center;
+				font-size: 1.2rem;
+			}
+			.Results .Result .Value {
+				background-color: rgba(0,0,0,0.75);
+				box-sizing: border-box;
+				padding: 0 0.5rem;
+				overflow: hidden;
+				display: flex;
+				align-items: center;
+				font-size: 1.6rem;
+				color: yellow;
+			}
+			.Results .Result .Value span {
+				font-size: smaller;
+				opacity: 0.75;
+			}
+			#Numpad {
+				width: 100%;
+				background-color: #333;
+				display: grid;
+				height: 20rem;
+				box-sizing: border-box;
+				padding: 0.5rem;
+				grid-template-columns: 25% 75%;
+				grid-template-rows: 15rem 2rem 1rem;
+				grid-template-areas: "OTHERKEYS TOPKEYS" "HIDER HIDER" ". .";
+			}
+			#Numpad .Keys {
+				display: grid;
+			}
+			#Numpad .TopKeys {
+				grid-template-rows: 25% 25% 25% 25%;
+				grid-template-columns: 33% 33% 33%;
+				grid-area: TOPKEYS;
+			}
+			#Numpad .OtherKeys {
+				grid-template-rows: 33% 33% 33%;
+				grid-area: OTHERKEYS;
+			}
+			#Numpad .Keys .Key {
+				box-sizing: border-box;
+				border: 0.2rem solid rgba(0,0,0,0.25);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 2rem;
+				font-weight: bold;
+				margin: 0.25rem;
+				border-radius: 0.4rem;
+				cursor: pointer;
+			}
+			#Numpad .Hider {
+				grid-area: HIDER;
+			}
+			#Numpad .TopKeys .Key {
+				background-color: #146114;
+			}
+			#Numpad .TopKeys .KeyY {
+				background-color: #191982;
+			}
+			#Numpad .TopKeys .KeyZ {
+				background-color: #717171;
+			}
+			#Numpad .OtherKeys .KeyK {
+				background-color: #b17c1c;
+			}
+			#Numpad .OtherKeys .KeyC {
+				background-color: #717171;
+			}
+			#Numpad .OtherKeys .KeyM {
+				background-color: #981111;
+			}
+			#Numpad .Hider .KeyX {
+				background-color: #630c63;
+			}
+			#MaxBulletsPerSecond { background-color: #af1b1b }
+			#MaxCyclesPerMinute { background-color: #b73970 }
+			#RawDamagePerMagazine { background-color: #751f70 }
+			#DamagePerSecond { background-color: #2d2580 }
+			#RealDamagePerSecond { background-color: #1a677b }
+			#RealDamagePerMinute { background-color: #29866a }
+			#FullDischargeTime { background-color: #3b651e }
+			#FullCycle { background-color: #8b9e31 }
+			#SecondsPerMinuteReloading { background-color: #a5851f }
+			#SecondsPerMinuteFiring { background-color: #82351b }
+			#Weapons {
+				box-sizing: border-box;
+				width: 100%;
+				height: 5rem;
+				padding: 1rem;
+			}
+			#Weapons .SelectWeapon {
+				-moz-appearance: none !important;
+				-webkit-appearance: none !important;
+				appearance: none !important;
+				border: 0.1rem solid #ccc;
+				margin: 0;
+				padding: 0 0.2rem;
+				text-align: center;
+				background: #666;
+				width: 100%;
+				height: 100%;
+				font: normal 1.2rem monospace;
+				resize: none;
+				color: inherit;
+				-webkit-tap-highlight-color: transparent !important;
+				-moz-tap-highlight-color: transparent !important;
+				tap-highlight-color: transparent !important;
+				outline: none !important;
+				box-sizing: border-box;
+			}
+			#Weapons .SelectWeapon option {
+				-moz-appearance: none !important;
+				-webkit-appearance: none !important;
+				appearance: none !important;
+				height: 0.8rem;
+				font: normal 0.8rem monospace;
+				text-align: center;
+				background-color: black;
+				color: white;
+				padding: 0;
+				margin: 0;
+				appearance: none;
+			}
+			
 		</style>
 		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+		<script src="/jquery.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 		
+			var WeaponSections = ["Name", "DPS", "DMG", "RPM", "MAG", "RLT"];
+			
+			var WeaponCache = [
+				{
+					"Type": "Assault Rifles",
+					"Arms": [
+						["ACR",67568,6237,650,30,2.2],
+						["AK-M",71100,7110,600,30,2.5],
+						["Black Market AK-M",71100,7110,600,30,2.3],
+						["Military AK-M",71100,7110,600,30,2.5],
+						["AUG A3",67150,5925,680,30,2.0],
+						["CTAR",70170,4678,900,30,2.1],
+						["F2000",70678,4989,850,30,2.0],
+						["FAL/SA-58",67568,6237,650,20,2.2],
+						["Tactical SA-58",67568,6237,650,20,2.3],
+						["FAMAS",79515,5301,900,30,2.2],
+						["G36",70163,5613,750,30,2.1],
+						["Military G36",70163,5613,750,30,2.3],
+						["Police M4",70678,4989,850,30,2.4],
+						["Mk16",68208,6548,625,30,2.2],
+						["P416",77963,6237,750,30,2.2]	
+					]
+				},{
+					"Type": "Marksman Rifles/Sniper Rifles",
+					"Arms": [
+						["Classic M44 Carbine",40021,43659,55,5,4.1],
+						["Classic M44 Carbine Replica",40021,43659,55,5,4.2],
+						["Custom M44",40021,43659,55,5,3.2],
+						["Hunting M44",41164,44906,55,5,3.8],
+						["SRS",38357,38357,60,7,3.0],
+						["M700",47714,53015,54,7,7.1],
+						["M700 Tactical",34802,38669,59,7,7.1],
+						["SR-1",37733,37733,60,5,3.2],
+						["SVD",94597,21830,260,10,2.5]
+					
+					]
+				},{
+					"Type": "Rifles",
+					"Arms": [
+						["1886",31185,51975,100,5,4.0],
+						["ACR",69853,9979,420,30,2.2],
+						["Classic M1A",67359,22453,180,10,3.0],
+						["M1A CQB",76507,14345,300,10,3.0],
+						["M4/LAR-15",42412,10603,240,30,2.4],
+						["Mk17/Mk20",80039,17463,275,20,2.2],
+						["SIG 716",65485,13097,300,20,2.4],
+						["Urban MDR",55300,11850,280,20,1.9],
+						["USC",39916,9979,240,20,2.2],
+						["M16A2",29625,5925,300,30,2.4]
+					]
+				},{
+					"Type": "SMGs (Submachine Guns)",
+					"Arms": [
+						["AUG",75364,6237,725,25,2.0],
+						["T821",74323,8108,550,32,1.9],
+						["SMG-9",77179,5613,825,32,2.0],
+						["SMG-9 A2",77179,5613,825,32,1.8],
+						["M1928",68600,6860,600,30,2.2],
+						["Tommy Gun",66520,4989,800,50,2.2],
+						["MP5",74840,5613,800,32,2.0],
+						["MP5 ST",74840,5613,800,32,1.9],
+						["MP7",69128,4366,950,40,2.0],
+						["MPX",70678,4989,850,30,2.2],
+						["P90",67350,4490,900,50,2.0],
+						["PP-19",69125,5925,700,53,2.5],
+						["UMP-45",68600,6860,600,30,2.2],
+						["Vector 9mm",74840,3742,1200,33,1.9],
+						["Vector .45 APC",74840,3742,1200,25,1.9],
+						["Tactical Vector",87320,4366,1200,19,1.9]
+					]
+				},{
+					"Type": "LMGs (Light Machine Guns)",
+					"Arms": [
+						["M60",72767,8732,500,100,5.8],
+						["Classic RPK-74",67568,6237,650,45,3.0],
+						["Black Market RPK-74 E",67568,6237,650,45,2.5],
+						["Military RPKR-74 M",67568,6237,650,45,2.8],
+						["M249 B",71463,7796,550,100,5.6],
+						["Tactical M249 Para",71463,7796,550,100,5.5],
+						["MG5",66520,4989,800,50,5.6],
+						["L86",69743,6860,610,30,3.0],
+						["MK46",71463,7796,550,100,5.0]
+					]
+				},	{
+					"Type": "Shotguns",
+					"Arms": [
+						["ACS-12",74820,14964,300,20,2.3],
+						["Double Barrel",-129720,64860,200,2,2.2],
+						["M870",68603,54882,75,5,3.7],
+						["SASG-12",67356,22452,180,7,3.0],
+						["SPAS-12",69356,59874,70,8,5.4],
+						["Super 90",79824,29934,160,8,4.8],
+						["Marine Super 90",79824,29934,160,8,4.3]
+					]
+				},{
+					"Type": "Pistols/Sidearms",
+					"Arms": [
+						["First Wave PF45",null,null,230,12,1.9],
+						["Custom PF45",null,null,230,15,1.9],
+						["D50",62370,24948,150,8,1.9],
+						["M1911",62703,14470,260,7,1.9],
+						["M45A1",null,null,260,8,1.9],
+						["M9",40748,9979,245,15,1.7],
+						["Px4 Storm Type F",null,null,250,17,1.9],
+						["Px4 Storm Type T",null,null,250,20,1.9],
+						["X-45",67773,10166,250,10,1.9],
+						["X-45 Tactical Replica",67773,10166,400,15,1.0],
+						["93R",74323,4054,1100,20,1.9],
+						["586 Magnum",39917,14969,160,6,1.7],
+						["Police 686 Magnum",-48000,-18000,160,6,1.5],
+						["Diceros",26961,8987,180,7,1.8],
+						["Snubnosed Diceros",26961,8987,180,6,1.8],
+						["Double Barrel Sawed Off Shotgun",-129720,64860,200,2,2.2]
+					]
+				}
+			];
+		
 			$(document).ready(function(){
+				
+				for ( var a = 0; a < WeaponCache.length; a++ ){
+					$("#Weapons .SelectWeapon").append("<option value=\"null\">--- "+ WeaponCache[a].Type +" ---</option>");
+					for ( var b = 0; b < WeaponCache[a].Arms.length; b++ ) $("#Weapons .SelectWeapon").append("<option value=\""+ a +","+ b +"\">"+ WeaponCache[a].Arms[b][0].toUpperCase() +"</option>");
+				}
+				
+				$("#Weapons .SelectWeapon").on("change", function(){
+				
+					var Arm = $(this).val();
+					if ( Arm == "null" ) return;
+					
+					var [Type, ArmID] = Arm.split(",");
+					var Data = WeaponCache[Type].Arms[ArmID];
+					
+					var ValidDMG = true;
+					
+					if ( Data[2] < 0 ) ValidDMG = false, $("#DamagePerBullet .Value .Face").html( Data[2] * -1 ), $("#DamagePerBullet .Add").text("*");
+					if ( Data[2] > 1000000 ) $("#DamagePerBullet .Value .Face").text(( Data[2] / 1000000 ).toFixed(2)), $("#DamagePerBullet .Add").text("M");
+					else if ( Data[2] > 10000 ) $("#DamagePerBullet .Value .Face").text(( Data[2] / 1000 ).toFixed(2)), $("#DamagePerBullet .Add").text("K");
+					else $("#DamagePerBullet .Value .Face").text(Data[2]), $("#DamagePerBullet .Add").text("");
+					
+					if ( ValidDMG ) $("#DamagePerBullet .Value .Real").text(Data[2]);
+					else $("#DamagePerBullet .Value .Real").text(Data[2] * -1);
+					
+					$("#RoundsPerMinute .Value .Face").text(Data[3]);
+					$("#RoundsPerMinute .Value .Real").text(Data[3]);
+					
+					$("#Magazine .Value .Face").text(Data[4]);
+					$("#Magazine .Value .Real").text(Data[4]);
+
+					$("#ReloadTime .Value .Face").text(Data[5]);
+					$("#ReloadTime .Value .Real").text(Data[5]);
+					
+					if ( ValidDMG ) Dodo();
+				
+				});
 				
 				$("#Holder .Entry").on("click", function(){
 					var CallerID = $(this).prop("id");
@@ -191,13 +405,14 @@
 				$("#Numpad").remove();
 				$("#Holder .Entry").removeClass("Active");
 				$("#"+ CallerID).addClass("Active");
+				$("#Weapons").hide();
 				
 				$("body").append(
 					"<div id=\"Numpad\">"+
 						"<div class=\"Keys OtherKeys\">"+							
 							"<div class=\"Key KeyK\" data-val=\"K\">K</div>"+
 							"<div class=\"Key KeyM\" data-val=\"M\">M</div>"+
-							"<div class=\"Key KeyX\" data-val=\"*\">🡇</div>"+
+							"<div class=\"Key KeyC\" data-val=\"C\">C</div>"+
 						"</div>"+
 						"<div class=\"Keys TopKeys\">"+
 							"<div class=\"Key\" data-val=\"1\">1</div>"+
@@ -213,6 +428,7 @@
 							"<div class=\"Key\" data-val=\"0\">0</div>"+
 							"<div class=\"Key KeyZ\" data-val=\"-\">&#8656;</div>"+
 						"</div>"+
+						"<div class=\"Keys Hider\"><div class=\"Key KeyX\" data-val=\"*\">&#8681;</div></div>"+
 					"</div>"
 				);
 				
@@ -228,7 +444,10 @@
 					
 					if ( Value === "0" ) Value = "";
 
-					if ( Key == "M" ){
+					if ( Key == "C" ){
+						Value = "";
+						Multiplier = null;
+					} else if ( Key == "M" ){
 						if ( CallerID != "DamagePerBullet" ) return;
 						if ( Multiplier == "M" ) Multiplier = null;
 						else Multiplier = "M";
@@ -245,6 +464,7 @@
 					} else if ( Key == "*" ){
 						$("#Numpad").remove();
 						$("#Holder .Entry").removeClass("Active");
+						$("#Weapons").removeAttr("style");
 						return;
 					} else {
 						Value += Key;
@@ -315,7 +535,7 @@
 				$("#FullCycle .Value").html(Human(FullCycle, false) +"<span>s</span>");
 				$("#SecondsPerMinuteReloading .Value").html(Human(SecondsPerMinuteReloading, false) +"<span>s</span>");
 				$("#SecondsPerMinuteFiring .Value").html(Human(SecondsPerMinuteFiring, false) +"<span>s</span>");
-					
+			
 			}
 			
 			var Parse = function(CallerID){
@@ -346,8 +566,9 @@
 
 		</script>
 		
-	</head>	
-	<body>
+	</head>
+	
+	<body ontouchstart="">
 	
 		<div class="Results">
 		
@@ -364,7 +585,7 @@
 			
 		</div>
 		
-		<div class="Text">Enter values below.</div>
+		<div class="Text">Enter values below</div>
 		
 		<div id="Holder">
 			<div class="Entry" id="DamagePerBullet"><div class="Label">DMG</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
@@ -372,6 +593,9 @@
 			<div class="Entry" id="Magazine"><div class="Label">MAG</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
 			<div class="Entry" id="ReloadTime"><div class="Label">RLT</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add">s</div></div>
 		</div>
+		
+		<div id="Weapons"><select class="SelectWeapon"><option value="null">Select Weapon</option></select></div>
 	
 	</body>
+	
 </html>
