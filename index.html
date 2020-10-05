@@ -7,15 +7,18 @@
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0"/>
 		<meta name="apple-mobile-web-app-title" content="The Division (and The Multiplication)">
 		<meta name="apple-mobile-web-app-capable" content="yes">
-		<link rel="apple-touch-icon" href="/single-page-icon.png">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<link rel="apple-touch-icon" href="/single-page-icon.png">
+		
+		<!--<script src="jquery.js" type="text/javascript"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		
 		<style>
 					
 			body, html {
 				background-color: black;
 				color: white;
-				font: normal 1rem monospace;
+				font: normal 1rem "Trebuchet MS";
 				padding: 0;
 				margin: 0;
 				width: 100%;
@@ -29,85 +32,269 @@
 				-moz-appearance: none;
 				-webkit-appearance: none;
 				appearance: none;
+			}			
+			.ClassNone {
+				color: #ccc;
 			}
+			.ClassStandard {
+				color: #8dc120;
+			}
+			.ClassSpecialized {
+				color: #5378f3;
+			}
+			.ClassSuperior {
+				color: #c15d9e;
+			}
+			.ClassHighEnd {
+				color: #d6900e;
+			}
+			.ClassExotic {
+				color: #ea5c40;
+			}		
 			.Text {
 				text-align: center;
+				text-transform: uppercase;
+				color: orange;
+				margin: 1rem 0;
 			}
-			#Holder {
+			#Entries {
+				margin: 0.5rem;
+			}
+			#Entries .Active {
+				background-color: #c18923 !important;
+				border-top-color: #ffbc43 !important;
+				border-bottom-color: #754c00 !important;
+			}
+			#Entries .Entry {
 				display: grid;
-				grid-template-rows: 5.8rem 5.8rem;
-				grid-template-columns: 50% 50%;
-				margin: 0.5rem 0.5rem;
+				grid-template-columns: 10rem auto;
+				grid-template-areas: "LABEL DISPLAY";
+				background-color: #ccc;
+				box-sizing: border-box;
+				border-bottom: 0.1rem solid #333;
+				border-top: 0.1rem solid #efefef;
 			}
-			#Holder .Entry {
+			#Entries .Active .Label {
+				text-shadow: 0 0.05rem 0.1rem #000 !important;
+				color: #fff !important;
+			}
+			#Entries .Entry .Label {
+				grid-area: LABEL;
+				display: flex;
+				align-items: center;
+				box-sizing: border-box;
+				padding: 0.5rem;
+				font-size: 1.2rem;
+				color: #333;
+				text-shadow: 0 0.05rem 0.1rem #fff;
+				font-weight: bold;
+			}
+			#Entries .Active .Display {
+				border-color: #c18923 !important;
+			}
+			#Entries .Entry .Display {
+				grid-area: DISPLAY;
+				font-family: monospace;
+				background-color: #333;
 				box-sizing: border-box;
 				border: 0.2rem solid #ccc;
+				box-shadow: 0 0.5rem 0.5rem #000 inset;
+			}
+			#Entries .Entry .DisplayComplex {
+				grid-template-columns: auto 1.4rem;
 				display: grid;
-				grid-template-columns: 3rem auto 2rem;
-				margin: 0.25rem;
-				overflow: hidden;
-				background-color: #ccc;
-				color: #000;
 			}
-			#Holder .Active {
-				background-color: orange !important;
-				border-color: orange;
-			}
-			#Holder .Label {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 1.4rem;
-				font-weight: bold;
-			}
-			#Holder .Value {
-				overflow: hidden;
-			}
-			#Holder .Value .Face {
+			#Entries .Entry .DisplaySimple {}
+			#Entries .Entry .Display .Value {
+				font: bold 1.5rem monospace;
 				box-sizing: border-box;
 				padding: 0 0.5rem;
-				display: flex;
-				align-items: center;
-				font-size: 2rem;
-				height: 3rem;
-				background-color: #333;
-				box-shadow: 0 0.5rem 1rem #000 inset;
 				color: lime;
+				height: 100%;
+				display: flex;
+				align-items: center;
 			}
-			#Holder .Value .Real {
+			#Entries .Entry .Display .DamageMultipliers {
+				display: grid;
+				grid-template-rows: repeat(3,33%);
+				height: 4rem;
+			}
+			#Entries .Entry .Display .DamageMultipliers .DamageMultiplier {
+				color: orange;
 				box-sizing: border-box;
-				padding: 0 0.5rem;
-				color: fuchsia;
-				height: 1.8rem;
+				border: 1px solid orange;
+				font-size: 0.7rem;
+				margin: 0.1rem;
+				opacity: 0.75;
+				background-color: #111;
 				display: flex;
 				align-items: center;
-			}
-			#Holder .Add {
-				font-size: 2rem;
-				display: flex;
 				justify-content: center;
-				align-items: center;
+			}
+			#Entries .Entry .Display .DamageMultipliers .DamageMultiplierSelected {
+				background-color: orange;
+				color: #000 !important;
 				font-weight: bold;
-				color: red;
+				font-size: 0.75rem !important;
+			}
+			#Entries .Entry .Hidden, #Entries .Entry .Alt {
+				display: none;
+			}
+			#Entries .Buff {
+				background-color: #005700;
+				border-bottom-color: #030;
+				border-top-color: #009300;
+			}
+			#Entries .Buff .Label {
+				color: #efefef;
+				text-shadow: 0 0.025rem 0.5rem #000;
+			}
+			#Entries .Buff .Display {
+				display: grid;
+				grid-template-columns: 5rem auto;
+				border-color: #005700;
+			}
+			#Entries .Buff .Display .Value {
+				color: orange;
+			}
+			#Entries .Buff .Display .Selector {
+				font: bold 1rem "Trebuchet MS";
+				color: white;
+				box-sizing: border-box;
+			}
+			#Entries .Buff .Display .SelectorDMG {
+				background-color: #003900;
+			}
+			#Entries .Buff .Display .SelectorMAG {
+				background-color: #1c4c8a;
+			}
+			#Entries .Buff .Display .SelectorRPM {
+				background-color: #844384;
+			}
+			#Entries .Buff .Display .SelectorRLT {
+				background-color: #914949;
+			}
+			#Entries .Buff .Display .Selector select {
+				appearance: none;
+				outline: none;
+				width: 100%;
+				height: 100%;
+				background: inherit;
+				font: inherit;
+				padding: 0;
+				margin: 0;
+				border: none;
+				color: inherit;
+				text-align: center;
+			}
+			#NameTag {
+				box-sizing: border-box;
+				width: 100%;
+				padding: 0.5rem;
+				display: grid;
+				grid-template-columns: fit-content(8rem) auto;
+			}
+			.NameTagHidden {
+				display: none !important;
+			}
+			#NameTag .none {
+				background-color: #999 !important;
+				border-color: #999 !important;
+			}
+			#NameTag .standard {
+				background-color: #8dc120 !important;
+				border-color: #8dc120 !important;
+			}
+			#NameTag .specialized {
+				background-color: #5378f3 !important;
+				border-color: #5378f3 !important;
+			}
+			#NameTag .superior {
+				background-color: #c15d9e !important;
+				border-color: #c15d9e !important;
+			}
+			#NameTag .highend {
+				background-color: #d6900e !important;
+				border-color: #d6900e !important;
+			}
+			#NameTag .exotic {
+				background-color: #ea5c40 !important;
+				border-color: #ea5c40 !important;
 			}
 
+			#NameTag .Classes .Class {
+				appearance: none;
+				margin: 0;
+				padding: 0;
+				background: none;
+				border: 0.1rem solid;
+				border-color: inherit;
+				width: 100%;
+				height: 100%;
+				color: #000;
+				text-align: center;
+				text-transform: uppercase;
+				font: bold 1rem "Trebuchet MS";
+			}
+			#NameTag .Classes .Class option {
+				appearance: none;
+				height: 1rem;
+				width: 100%;
+				text-align: center;
+				background-color: #000;
+				text-transform: uppercase;
+				font: bold 1rem "Trebuchet MS";
+			}
+			#NameTag .Name {
+				border: 0.1rem solid #666;
+				padding: 0.5rem;
+				text-align: center;
+				text-transform: uppercase;
+				color: orange;
+			}
+			#Buttons {
+				box-sizing: border-box;
+				padding: 0.5rem;
+				display: grid;
+				grid-template-columns: repeat(4,25%);
+				height: 4rem;
+			}
+			#Buttons .Button {
+				background-color: #efefef;
+				color: #000;
+				text-transform: uppercase;
+				text-align: center;
+				line-height: 4rem;
+				border-width: 0.1rem;
+				border-style: solid;
+				border-color: #fff #333 #ccc #333;
+				font-size: 2rem;
+				filter: grayscale(1);
+				text-shadow: 0 0.1rem 0.05rem #fff;
+			}
 			.Results {
 				box-sizing: border-box;
-				padding: 1rem 0.5rem;
+				padding: 0.5rem;
+			}
+			.Results .ResultHidden {
+				display: none !important;
 			}
 			.Results .Result {
 				display: grid;
 				grid-template-columns: auto 8rem;
 				height: 2.4rem;
-				background-color: green;
-				margin-bottom: 0.5rem;
+				background-color: #333;
+				border-bottom: 0.1rem solid #222;
+				border-top: 0.1rem solid #444;
+				border-right: 0.1rem solid #333;
 			}
 			.Results .Result .Label {
 				box-sizing: border-box;
 				padding: 0 0.5rem;
 				display: flex;
 				align-items: center;
-				font-size: 1.2rem;
+				font-size: 1rem;
+				text-shadow: 0.1rem 0.1rem #222;
 			}
 			.Results .Result .Value {
 				background-color: rgba(0,0,0,0.75);
@@ -116,7 +303,7 @@
 				overflow: hidden;
 				display: flex;
 				align-items: center;
-				font-size: 1.6rem;
+				font-size: 1.4rem;
 				color: yellow;
 			}
 			.Results .Result .Value span {
@@ -127,11 +314,11 @@
 				width: 100%;
 				background-color: #333;
 				display: grid;
-				height: 20rem;
+				height: 25rem;
 				box-sizing: border-box;
 				padding: 0.5rem;
 				grid-template-columns: 25% 75%;
-				grid-template-rows: 15rem 2rem 1rem;
+				grid-template-rows: 20rem 2rem 1rem;
 				grid-template-areas: "OTHERKEYS TOPKEYS" "HIDER HIDER" ". .";
 			}
 			#Numpad .Keys {
@@ -182,237 +369,149 @@
 			#Numpad .Hider .KeyX {
 				background-color: #630c63;
 			}
-			#MaxBulletsPerSecond { background-color: #af1b1b }
-			#MaxCyclesPerMinute { background-color: #b73970 }
-			#RawDamagePerMagazine { background-color: #751f70 }
-			#DamagePerSecond { background-color: #2d2580 }
-			#RealDamagePerSecond { background-color: #1a677b }
-			#RealDamagePerMinute { background-color: #29866a }
-			#FullDischargeTime { background-color: #3b651e }
-			#FullCycle { background-color: #8b9e31 }
-			#SecondsPerMinuteReloading { background-color: #a5851f }
-			#SecondsPerMinuteFiring { background-color: #82351b }
-			#Weapons {
-				box-sizing: border-box;
-				width: 100%;
-				height: 5rem;
-				padding: 1rem;
-			}
-			#Weapons .SelectWeapon {
-				-moz-appearance: none !important;
-				-webkit-appearance: none !important;
-				appearance: none !important;
-				border: 0.1rem solid #ccc;
-				margin: 0;
-				padding: 0 0.2rem;
-				text-align: center;
-				background: #666;
-				width: 100%;
-				height: 100%;
-				font: normal 1.2rem monospace;
-				resize: none;
-				color: inherit;
-				-webkit-tap-highlight-color: transparent !important;
-				-moz-tap-highlight-color: transparent !important;
-				tap-highlight-color: transparent !important;
-				outline: none !important;
-				box-sizing: border-box;
-			}
-			#Weapons .SelectWeapon option {
-				-moz-appearance: none !important;
-				-webkit-appearance: none !important;
-				appearance: none !important;
-				height: 0.8rem;
-				font: normal 0.8rem monospace;
-				text-align: center;
-				background-color: black;
-				color: white;
-				padding: 0;
-				margin: 0;
-				appearance: none;
-			}
 			
 		</style>
 		
-		<script src="/jquery.js" type="text/javascript"></script>
-		
 		<script type="text/javascript">
 		
-			var WeaponSections = ["Name", "DPS", "DMG", "RPM", "MAG", "RLT"];
-			
-			var WeaponCache = [
-				{
-					"Type": "Assault Rifles",
-					"Arms": [
-						["ACR",67568,6237,650,30,2.2],
-						["AK-M",71100,7110,600,30,2.5],
-						["Black Market AK-M",71100,7110,600,30,2.3],
-						["Military AK-M",71100,7110,600,30,2.5],
-						["AUG A3",67150,5925,680,30,2.0],
-						["CTAR",70170,4678,900,30,2.1],
-						["F2000",70678,4989,850,30,2.0],
-						["FAL/SA-58",67568,6237,650,20,2.2],
-						["Tactical SA-58",67568,6237,650,20,2.3],
-						["FAMAS",79515,5301,900,30,2.2],
-						["G36",70163,5613,750,30,2.1],
-						["Military G36",70163,5613,750,30,2.3],
-						["Police M4",70678,4989,850,30,2.4],
-						["Mk16",68208,6548,625,30,2.2],
-						["P416",77963,6237,750,30,2.2]	
-					]
-				},{
-					"Type": "Marksman Rifles/Sniper Rifles",
-					"Arms": [
-						["Classic M44 Carbine",40021,43659,55,5,4.1],
-						["Classic M44 Carbine Replica",40021,43659,55,5,4.2],
-						["Custom M44",40021,43659,55,5,3.2],
-						["Hunting M44",41164,44906,55,5,3.8],
-						["SRS",38357,38357,60,7,3.0],
-						["M700",47714,53015,54,7,7.1],
-						["M700 Tactical",34802,38669,59,7,7.1],
-						["SR-1",37733,37733,60,5,3.2],
-						["SVD",94597,21830,260,10,2.5]
-					
-					]
-				},{
-					"Type": "Rifles",
-					"Arms": [
-						["1886",31185,51975,100,5,4.0],
-						["ACR",69853,9979,420,30,2.2],
-						["Classic M1A",67359,22453,180,10,3.0],
-						["M1A CQB",76507,14345,300,10,3.0],
-						["M4/LAR-15",42412,10603,240,30,2.4],
-						["Mk17/Mk20",80039,17463,275,20,2.2],
-						["SIG 716",65485,13097,300,20,2.4],
-						["Urban MDR",55300,11850,280,20,1.9],
-						["USC",39916,9979,240,20,2.2],
-						["M16A2",29625,5925,300,30,2.4]
-					]
-				},{
-					"Type": "SMGs (Submachine Guns)",
-					"Arms": [
-						["AUG",75364,6237,725,25,2.0],
-						["T821",74323,8108,550,32,1.9],
-						["SMG-9",77179,5613,825,32,2.0],
-						["SMG-9 A2",77179,5613,825,32,1.8],
-						["M1928",68600,6860,600,30,2.2],
-						["Tommy Gun",66520,4989,800,50,2.2],
-						["MP5",74840,5613,800,32,2.0],
-						["MP5 ST",74840,5613,800,32,1.9],
-						["MP7",69128,4366,950,40,2.0],
-						["MPX",70678,4989,850,30,2.2],
-						["P90",67350,4490,900,50,2.0],
-						["PP-19",69125,5925,700,53,2.5],
-						["UMP-45",68600,6860,600,30,2.2],
-						["Vector 9mm",74840,3742,1200,33,1.9],
-						["Vector .45 APC",74840,3742,1200,25,1.9],
-						["Tactical Vector",87320,4366,1200,19,1.9]
-					]
-				},{
-					"Type": "LMGs (Light Machine Guns)",
-					"Arms": [
-						["M60",72767,8732,500,100,5.8],
-						["Classic RPK-74",67568,6237,650,45,3.0],
-						["Black Market RPK-74 E",67568,6237,650,45,2.5],
-						["Military RPKR-74 M",67568,6237,650,45,2.8],
-						["M249 B",71463,7796,550,100,5.6],
-						["Tactical M249 Para",71463,7796,550,100,5.5],
-						["MG5",66520,4989,800,50,5.6],
-						["L86",69743,6860,610,30,3.0],
-						["MK46",71463,7796,550,100,5.0]
-					]
-				},	{
-					"Type": "Shotguns",
-					"Arms": [
-						["ACS-12",74820,14964,300,20,2.3],
-						["Double Barrel",-129720,64860,200,2,2.2],
-						["M870",68603,54882,75,5,3.7],
-						["SASG-12",67356,22452,180,7,3.0],
-						["SPAS-12",69356,59874,70,8,5.4],
-						["Super 90",79824,29934,160,8,4.8],
-						["Marine Super 90",79824,29934,160,8,4.3]
-					]
-				},{
-					"Type": "Pistols/Sidearms",
-					"Arms": [
-						["First Wave PF45",null,null,230,12,1.9],
-						["Custom PF45",null,null,230,15,1.9],
-						["D50",62370,24948,150,8,1.9],
-						["M1911",62703,14470,260,7,1.9],
-						["M45A1",null,null,260,8,1.9],
-						["M9",40748,9979,245,15,1.7],
-						["Px4 Storm Type F",null,null,250,17,1.9],
-						["Px4 Storm Type T",null,null,250,20,1.9],
-						["X-45",67773,10166,250,10,1.9],
-						["X-45 Tactical Replica",67773,10166,400,15,1.0],
-						["93R",74323,4054,1100,20,1.9],
-						["586 Magnum",39917,14969,160,6,1.7],
-						["Police 686 Magnum",-48000,-18000,160,6,1.5],
-						["Diceros",26961,8987,180,7,1.8],
-						["Snubnosed Diceros",26961,8987,180,6,1.8],
-						["Double Barrel Sawed Off Shotgun",-129720,64860,200,2,2.2]
-					]
-				}
+			const ToHide = [
+				"SecondsPerMinuteReloading",
+				"FullCycle",
+				"RawDamagePerMagazine",
+				"DamagePerSecond"
 			];
+			
+			const AboutTime = {
+				SecondsPerMinuteReloading: 1,
+				SecondsPerMinuteFiring: 1,
+				FullDischargeTime: 1,
+				FullCycle: 1,
+				MaxCyclesPerMinute: 0,
+				RawDamagePerMagazine: 0,
+				MaxBulletsPerSecond: 0,
+				DamagePerSecond: 0,
+				RealDamagePerSecond: 0,
+				RealDamagePerMinute: 0
+			};
+			
+			const Selectors = [
+				"SelectorDMG", "SelectorRPM", "SelectorMAG", "SelectorRLT"
+			];
+			
+			var DamageMultiplier = "K";
+			var BuffsAdded = 0;
+			var CompactView = true;
 		
 			$(document).ready(function(){
+						
+				$("#Entries .Entry").on("click", function(){
 				
-				for ( var a = 0; a < WeaponCache.length; a++ ){
-					$("#Weapons .SelectWeapon").append("<option value=\"null\">--- "+ WeaponCache[a].Type +" ---</option>");
-					for ( var b = 0; b < WeaponCache[a].Arms.length; b++ ) $("#Weapons .SelectWeapon").append("<option value=\""+ a +","+ b +"\">"+ WeaponCache[a].Arms[b][0].toUpperCase() +"</option>");
-				}
+					Numpad($(this).prop("id"));
+					
+				});
 				
-				$("#Weapons .SelectWeapon").on("change", function(){
+				$("#Buttons .Button").on("click", function(){
 				
-					var Arm = $(this).val();
-					if ( Arm == "null" ) return;
+					var Action = $(this).data("action");
+					switch(Action){
 					
-					var [Type, ArmID] = Arm.split(",");
-					var Data = WeaponCache[Type].Arms[ArmID];
+						case "reset":
+						
+							$("#Entries .Entry .Display .Value").text(0);
+							$("#ReloadTime .Display .Value").text("0s");
+							$("#Entries .Hidden").text(0);
+							$("#Entries .Buff").remove();
+							ChangeDamageMultiplier("K");
+							BuffsAdded = 0;
+							for ( const[ResultID, IsAboutTime] of Object.entries(AboutTime) )
+								if ( IsAboutTime ) $("#"+ResultID +" .Value").html("0<span>s</span>");
+								else $("#"+ResultID +" .Value").text("0");
+								
+						break;
+						
+						case "moredata":
+						
+							if ( CompactView ){
+								CompactView = false;
+								for ( var a = 0; a < ToHide.length; a++ ) $("#"+ ToHide[a]).removeClass("ResultHidden");
+							} else {
+								CompactView = true;
+								for ( var a = 0; a < ToHide.length; a++ ) $("#"+ ToHide[a]).addClass("ResultHidden");
+							}
+						
+						break;
+						
+						case "addbuff":
+						
+							BuffsAdded++;
+							
+							$("#Entries").append(
+								"<!-- BUFF ENTRY #" +BuffsAdded +" -->"+
+								"<div class=\"Buff Entry\" id=\"Buff"+ BuffsAdded +"\">"+
+									"<div class=\"Label\">BUFF <i>#"+ BuffsAdded +"</i></div>"+
+									"<div class=\"Display\">"+
+										"<div class=\"Selector SelectorDMG\">"+
+											"<select data-id=\""+ BuffsAdded +"\">"+
+												"<option class=\"SelectorDMG\" value=\"0\">DMG</option>"+
+												"<option class=\"SelectorRPM\" value=\"1\">RPM</option>"+
+												"<option class=\"SelectorMAG\" value=\"2\">MAG</option>"+
+												"<option class=\"SelectorRLT\" value=\"3\">RLT</option>"+
+											"</select>"+
+										"</div>"+
+										"<div class=\"Value\" data-id=\""+ BuffsAdded +"\">0%</div>"+
+									"</div>"+
+									"<div class=\"Hidden\">0</div>"+
+									"<div class=\"Alt\">%</div>"+
+								"</div>"
+							);
+							
+							BuffSelect();
+						
+						break;
+						
+						case "shownametag":
+						
+							$("#NameTag").removeAttr("class");
+						
+						break;
 					
-					var ValidDMG = true;
-					
-					if ( Data[2] < 0 ) ValidDMG = false, $("#DamagePerBullet .Value .Face").html( Data[2] * -1 ), $("#DamagePerBullet .Add").text("*");
-					if ( Data[2] > 1000000 ) $("#DamagePerBullet .Value .Face").text(( Data[2] / 1000000 ).toFixed(2)), $("#DamagePerBullet .Add").text("M");
-					else if ( Data[2] > 10000 ) $("#DamagePerBullet .Value .Face").text(( Data[2] / 1000 ).toFixed(2)), $("#DamagePerBullet .Add").text("K");
-					else $("#DamagePerBullet .Value .Face").text(Data[2]), $("#DamagePerBullet .Add").text("");
-					
-					if ( ValidDMG ) $("#DamagePerBullet .Value .Real").text(Data[2]);
-					else $("#DamagePerBullet .Value .Real").text(Data[2] * -1);
-					
-					$("#RoundsPerMinute .Value .Face").text(Data[3]);
-					$("#RoundsPerMinute .Value .Real").text(Data[3]);
-					
-					$("#Magazine .Value .Face").text(Data[4]);
-					$("#Magazine .Value .Real").text(Data[4]);
-
-					$("#ReloadTime .Value .Face").text(Data[5]);
-					$("#ReloadTime .Value .Real").text(Data[5]);
-					
-					if ( ValidDMG ) Dodo();
+					}
 				
 				});
 				
-				$("#Holder .Entry").on("click", function(){
-					var CallerID = $(this).prop("id");
-					Numpad(CallerID);
+				$("#NameTag .Classes .Class").on("change", function(){
+					var NewClass = $(this).val();
+					$("#NameTag .Classes").removeClass().addClass("Classes "+ NewClass);
 				});
+				
+				$("#NameTag .Name").on("focus", function(){
+					var Text = $(this).text().trim();
+					if ( Text == "Enter Name" ) $(this).text("");
+				}).on("blur", function(){
+					var Text = $(this).text().trim();
+					if ( Text == "" ) $(this).text("Enter Name");
+				});
+				
+				setTimeout(function(){
+					for ( var a = 0; a < ToHide.length; a++ ) $("#"+ ToHide[a]).addClass("ResultHidden");
+				}, 500);
 				
 			});
 						
-			var Numpad = function(CallerID){
+			var Numpad = function(CallerID, IsBuff = false){
 			
 				$("#Numpad").remove();
-				$("#Holder .Entry").removeClass("Active");
+				$("#Entries .Entry").removeClass("Active");
 				$("#"+ CallerID).addClass("Active");
-				$("#Weapons").hide();
+				$("#NameTag").hide();
+				$("#Buttons").hide();
 				
 				$("body").append(
 					"<div id=\"Numpad\">"+
 						"<div class=\"Keys OtherKeys\">"+							
-							"<div class=\"Key KeyK\" data-val=\"K\">K</div>"+
-							"<div class=\"Key KeyM\" data-val=\"M\">M</div>"+
-							"<div class=\"Key KeyC\" data-val=\"C\">C</div>"+
+							"<div class=\"Key KeyK\" data-val=\"K\"></div>"+
+							"<div class=\"Key KeyM\" data-val=\"M\"></div>"+
+							"<div class=\"Key KeyC\" data-val=\"clear\">C</div>"+
 						"</div>"+
 						"<div class=\"Keys TopKeys\">"+
 							"<div class=\"Key\" data-val=\"1\">1</div>"+
@@ -424,79 +523,133 @@
 							"<div class=\"Key\" data-val=\"7\">7</div>"+
 							"<div class=\"Key\" data-val=\"8\">8</div>"+
 							"<div class=\"Key\" data-val=\"9\">9</div>"+
-							"<div class=\"Key KeyY\" data-val=\".\">.</div>"+
+							"<div class=\"Key KeyY\" data-val=\"point\">.</div>"+
 							"<div class=\"Key\" data-val=\"0\">0</div>"+
-							"<div class=\"Key KeyZ\" data-val=\"-\">&#8656;</div>"+
+							"<div class=\"Key KeyZ\" data-val=\"backspace\">&#8656;</div>"+
 						"</div>"+
-						"<div class=\"Keys Hider\"><div class=\"Key KeyX\" data-val=\"*\">&#8681;</div></div>"+
+						"<div class=\"Keys Hider\"><div class=\"Key KeyX\" data-val=\"close\">&#8681;</div></div>"+
 					"</div>"
 				);
 				
-				if ( CallerID != "DamagePerBullet" ) $("#Numpad .OtherKeys .KeyK").css("opacity", 0), $("#Numpad .OtherKeys .KeyM").css("opacity", 0);
-				if ( CallerID == "RoundsPerMinute" || CallerID == "Magazine" ) $("#Numpad .TopKeys .KeyY").css("opacity", 0);
+				if ( IsBuff ){
 				
-				var Multiplier = null;
+					$("#Numpad .OtherKeys .KeyK").text("+/-");
+					var ElementType = parseInt($("#"+ CallerID +" .Display .Selector select").val());
+					if ( ElementType == 0 ) $("#Numpad .OtherKeys .KeyM").text("%");
+					if ( ElementType == 1 ) $("#Numpad .OtherKeys .KeyM").css("opacity", 0);
+					if ( ElementType == 2 ) $("#Numpad .OtherKeys .KeyM").css("opacity", 0);
+					if ( ElementType == 3 ) $("#Numpad .OtherKeys .KeyM").text("% / s");
+					
+				} else {
+				
+					$("#Numpad .OtherKeys .KeyK").text("K");
+					$("#Numpad .OtherKeys .KeyM").text("M");
+					
+					if ( CallerID != "DamagePerBullet" ){
+						$("#Numpad .OtherKeys .KeyK").css("opacity", 0);
+						$("#Numpad .OtherKeys .KeyM").css("opacity", 0);
+					}
+					if ( CallerID == "RoundsPerMinute" || CallerID == "Magazine" ) $("#Numpad .TopKeys .KeyY").css("opacity", 0);
+				
+				}
 				
 				$("#Numpad .Keys .Key").on("click", function(){
 				
 					var Key = $(this).data("val");
-					var Value = String($("#"+ CallerID +" .Value .Face").text());
+					var Value = String($("#"+ CallerID +" .Display .Value").text()).replace("s", "").replace("%", "");
 					
 					if ( Value === "0" ) Value = "";
 
-					if ( Key == "C" ){
+					if ( Key == "clear" ){
+					
 						Value = "";
-						Multiplier = null;
-					} else if ( Key == "M" ){
-						if ( CallerID != "DamagePerBullet" ) return;
-						if ( Multiplier == "M" ) Multiplier = null;
-						else Multiplier = "M";
-					} else if ( Key == "K" ){
-						if ( CallerID != "DamagePerBullet" ) return;
-						if ( Multiplier == "K" ) Multiplier = null;
-						else Multiplier = "K";
-					} else if ( Key == "-" ){
+						if ( CallerID == "DamagePerBullet" ) ChangeDamageMultiplier("K");
+						
+					} else if ( Key == "K" ){ // also plus/minus switch
+					
+						if ( CallerID == "DamagePerBullet" ){
+						
+							if ( DamageMultiplier == "K" ) ChangeDamageMultiplier("C");
+							else ChangeDamageMultiplier("K");
+							
+						} else if ( IsBuff ){
+						
+							if ( Value.substr(0,1) == "-" ) Value = Value.substr(1);
+							else Value = "-" + Value;
+							
+						}
+						
+					} else if ( Key == "M" ){ // also percentage/second switch
+					
+						if ( CallerID == "DamagePerBullet" ){
+						
+							if ( DamageMultiplier == "M" ) ChangeDamageMultiplier("K");
+							else ChangeDamageMultiplier("M");
+							
+						} else if ( IsBuff ){
+							
+							var ElementType = parseInt($("#"+ CallerID +" .Display .Selector select").val());
+							var BuffAlt = $("#"+ CallerID +" .Alt").text();
+							
+							if ( ElementType == 0 ){
+								if ( BuffAlt == "%" ) $("#"+ CallerID +" .Alt").text("");
+								else $("#"+ CallerID +" .Alt").text("%");
+							} else if ( ElementType == 3 ){
+								if ( BuffAlt == "%" ) $("#"+ CallerID +" .Alt").text("s");
+								else $("#"+ CallerID +" .Alt").text("%");
+							}
+						}
+						
+					} else if ( Key == "backspace" ){
+					
 						Value = Value.substr(0, Value.length-1);
-					} else if ( Key == "." ){
+						
+					} else if ( Key == "point" ){
+					
 						if ( CallerID == "Magazine" || CallerID == "RoundsPerMinute" ) return;
 						if ( Value.indexOf(".") > -1 ) return;
+						else if ( Value.length == 0 ) Value = "0.";
 						else Value += ".";
-					} else if ( Key == "*" ){
+						
+					} else if ( Key == "close" ){
+					
 						$("#Numpad").remove();
-						$("#Holder .Entry").removeClass("Active");
-						$("#Weapons").removeAttr("style");
+						$("#Entries .Entry").removeClass("Active");
+						$("#NameTag").removeAttr("style");
+						$("#Buttons").removeAttr("style");
 						return;
+						
 					} else {
+					
 						Value += Key;
+						
 					}
 					
 					if ( Value.length == 0 ){
-						Multiplier = null;
-						if ( CallerID != "ReloadTime" ) $("#"+ CallerID +" .Add").text("");
-						$("#"+ CallerID +" .Value .Face").text(0);
-						$("#"+ CallerID +" .Value .Real").text(0);
-						Dodo();
-						return
-					};
-					
-					if ( CallerID == "ReloadTime" ){
-					
-						var RealValue = Value;
-					
+						
+						$("#"+ CallerID +" .Display .Value").text(0);
+						$("#"+ CallerID +" .Hidden").text(0);
+						if ( CallerID == "ReloadTime" ) $("#"+ CallerID +" .Display .Value").text("0s");
+						else if ( IsBuff ) $("#"+ CallerID +" .Display .Value").text("0" + $("#"+ CallerID +" .Alt").text());
+						
 					} else {
 					
-						if ( Multiplier == null ) $("#"+ CallerID +" .Add").text("");
-						else $("#"+ CallerID +" .Add").text(Multiplier);
+						if ( CallerID == "ReloadTime" ) $("#ReloadTime .Display .Value").text(Value +"s");
+						else if ( IsBuff ) $("#"+ CallerID +" .Display .Value").text(Value + $("#"+ CallerID +" .Alt").text());
+						else $("#"+ CallerID +" .Display .Value").text(Value);
 						
-						var RealValue = parseFloat(Value);
-						if ( Multiplier == "M" ) RealValue *= 1000000;
-						else if ( Multiplier == "K" ) RealValue *= 1000;
+						if ( CallerID == "DamagePerBullet" ){
+						
+							var RealNumber = parseFloat(Value);
+							if ( DamageMultiplier == "K" ) RealNumber *= 1000;
+							else if ( DamageMultiplier == "M" ) RealNumber *= 1000000;
+							$("#DamagePerBullet .Hidden").text(RealNumber);
+							
+						} else $("#"+ CallerID +" .Hidden").text(Value);
 					
 					}
 					
-					$("#"+ CallerID +" .Value .Face").text(Value);
-					$("#"+ CallerID +" .Value .Real").text(parseFloat(RealValue));
-					Dodo();
+					Calc();
 				
 				});
 				
@@ -504,12 +657,42 @@
 			
 			}
 			
-			var Dodo = function(){
+			var Calc = function(){
 			
 				var DamagePerBullet = Parse("DamagePerBullet");
 				var RoundsPerMinute = Parse("RoundsPerMinute");
 				var Magazine = Parse("Magazine");
 				var ReloadTime = Parse("ReloadTime");
+				
+				if ( BuffsAdded > 0 ) for ( var a = 1; a <= BuffsAdded; a++ ){
+				
+					var ElementType = parseInt($("#Buff"+ a +" .Display .Selector select").val());
+					var Alt = $("#Buff"+ a +" .Alt").text();
+					var Value = parseFloat($("#Buff"+ a +" .Hidden").text());
+					
+					switch(ElementType){
+					
+						case 0:
+							if ( Alt == "%" ) DamagePerBullet += ( DamagePerBullet / 100 ) * Value;
+							else DamagePerBullet += Value;
+						break;
+						
+						case 1:
+							RoundsPerMinute += Value;
+						break;
+						
+						case 2:
+							Magazine += Value;
+						break;
+						
+						case 3:
+							if ( Alt == "%" ) ReloadTime += ( ReloadTime / 100 ) * Value;
+							else ReloadTime += Value;
+						break;
+					
+					}
+				
+				};
 				
 				var MaxBulletsPerSecond = ( RoundsPerMinute / 60 );
 				var FullDischargeTime = ( Magazine / RoundsPerMinute ) * 60;
@@ -538,9 +721,49 @@
 			
 			}
 			
+			var BuffSelect = function(){
+			
+				$("#Entries .Buff .Display .Value").off().on("click", function(){
+					Numpad("Buff" + $(this).data("id"), true);
+				});
+				
+				$("#Entries .Buff .Display .Selector select").off().on("change", function(){
+				
+					var BuffID = $(this).data("id");
+					var ElementType = parseInt($(this).val());
+					var Value = $("#Buff"+ BuffID +" .Display .Value").text().replace("s", "").replace("%", "");
+					var ElementType = parseInt($(this).val());
+				
+					$("#Buff"+ BuffID +" .Display .Selector").removeClass().addClass("Selector "+ Selectors[ElementType]);
+					
+					if ( ElementType == 0 ){
+						$("#Buff"+ BuffID +" .Alt").text("%");
+						$("#Buff"+ BuffID +" .Display .Value").text(Value +"%");
+					} else if ( ElementType == 1 || ElementType == 2 ){
+						$("#Buff"+ BuffID +" .Alt").text("");
+						$("#Buff"+ BuffID +" .Display .Value").text(Value);
+					} else {
+						$("#Buff"+ BuffID +" .Alt").text("%");
+						$("#Buff"+ BuffID +" .Display .Value").text(Value +"%");
+					}
+					
+					if ( $("#Numpad").hasOwnProperty("0") ){
+											
+						if ( ElementType == 0 ) $("#Numpad .OtherKeys .KeyM").removeAttr("style").text("%");
+						else if ( ElementType == 1 || ElementType == 2 ) $("#Numpad .OtherKeys .KeyM").css("opacity", 0);
+						else $("#Numpad .OtherKeys .KeyM").removeAttr("style").text("% / s");
+						
+					}
+					
+					Calc();
+					
+				});
+			
+			}
+			
 			var Parse = function(CallerID){
 			
-				var Value = $("#"+ CallerID +" .Value .Real").html();
+				var Value = $("#"+ CallerID +" .Hidden").text();
 				return parseFloat(Value);
 			
 			}
@@ -548,6 +771,8 @@
 			var Human = function(Value, AddSuffix = true){
 			
 				var Suffix = null;
+				
+				if ( isNaN(Value) || !isFinite(Value) ) return 0;
 				
 				if ( Value >= 1000000 ){
 					Value /= 1000000;
@@ -562,6 +787,12 @@
 				if ( AddSuffix && Suffix != null ) return Value + Suffix;
 				else return Value;
 			
+			}
+			
+			var ChangeDamageMultiplier = function(NewDamageMultiplier){
+				DamageMultiplier = NewDamageMultiplier;
+				$("#DamagePerBullet .Display .DamageMultipliers .DamageMultiplier").removeClass("DamageMultiplierSelected");
+				$("#DamagePerBullet .Display .DamageMultipliers .DamageMultiplier" + NewDamageMultiplier).addClass("DamageMultiplierSelected");
 			}
 
 		</script>
@@ -587,14 +818,71 @@
 		
 		<div class="Text">Enter values below</div>
 		
-		<div id="Holder">
-			<div class="Entry" id="DamagePerBullet"><div class="Label">DMG</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
-			<div class="Entry" id="RoundsPerMinute"><div class="Label">RPM</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
-			<div class="Entry" id="Magazine"><div class="Label">MAG</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add"></div></div>
-			<div class="Entry" id="ReloadTime"><div class="Label">RLT</div><div class="Value"><div class="Face">0</div><div class="Real">0</div></div><div class="Add">s</div></div>
+		<div id="Entries">
+		
+			<!-- DAMAGE PER BULLET -->
+			<div class="Entry" id="DamagePerBullet">
+				<div class="Label">DAMAGE</div>
+				<div class="Display DisplayComplex">
+					<div class="Value">0</div>
+					<div class="DamageMultipliers">
+						<div class="DamageMultiplier DamageMultiplierC">C</div>
+						<div class="DamageMultiplier DamageMultiplierK DamageMultiplierSelected">K</div>
+						<div class="DamageMultiplier DamageMultiplierM">M</div>
+					</div>
+				</div>
+				<div class="Hidden">0</div>
+			</div>
+			
+			<!-- ROUNDS PER MINUTE -->
+			<div class="Entry" id="RoundsPerMinute">
+				<div class="Label">ROUNDS/MINUTE</div>
+				<div class="Display DisplaySimple">
+					<div class="Value">0</div>
+				</div>
+				<div class="Hidden">0</div>
+			</div>
+			
+			<!-- MAGAZINE SIZE -->
+			<div class="Entry" id="Magazine">
+				<div class="Label">MAGAZINE</div>
+				<div class="Display DisplaySimple">
+					<div class="Value">0</div>
+				</div>
+				<div class="Hidden">0</div>
+			</div>
+			
+			<!-- RELOAD TIME -->
+			<div class="Entry" id="ReloadTime">
+				<div class="Label">RELOAD TIME</div>
+				<div class="Display DisplaySimple">
+					<div class="Value">0s</div>
+				</div>
+				<div class="Hidden">0</div>
+			</div>
+			
 		</div>
 		
-		<div id="Weapons"><select class="SelectWeapon"><option value="null">Select Weapon</option></select></div>
+		<div id="NameTag" class="NameTagHidden">
+			<div class="Classes none">
+				<select class="Class">
+					<option value="none" class="ClassNone">Unclassed</option>
+					<option value="standard" class="ClassStandard">Standard</option>
+					<option value="specialized" class="ClassSpecialized">Specialized</option>
+					<option value="superior" class="ClassSuperior">Superior</option>
+					<option value="highend" class="ClassHighEnd">High-End</option>
+					<option value="exotic" class="ClassExotic">Exotic</option>
+				</select>
+			</div>
+			<div class="Name" contenteditable="true">Enter Name</div>
+		</div>
+		
+		<div id="Buttons">
+			<div class="Button" data-action="reset">❌</div>
+			<div class="Button" data-action="shownametag">✏</div>
+			<div class="Button" data-action="moredata">👁‍</div>
+			<div class="Button" data-action="addbuff">+💪</div>
+		</div>
 	
 	</body>
 	
