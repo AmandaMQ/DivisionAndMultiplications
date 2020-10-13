@@ -251,6 +251,10 @@
 				text-align: center;
 				text-transform: uppercase;
 				color: orange;
+				appearance: none;
+				background-color: #000;
+				margin: 0;
+				font: 1rem "Trebuchet MS";
 			}
 			#Buttons {
 				box-sizing: border-box;
@@ -484,13 +488,13 @@
 					$("#NameTag .Classes").removeClass().addClass("Classes "+ NewClass);
 				});
 				
-				$("#NameTag .Name").on("focus", function(){
+				/*$("#NameTag .Name").on("focus", function(){
 					var Text = $(this).text().trim();
 					if ( Text == "Enter Name" ) $(this).text("");
 				}).on("blur", function(){
 					var Text = $(this).text().trim();
 					if ( Text == "" ) $(this).text("Enter Name");
-				});
+				});*/
 				
 				setTimeout(function(){
 					for ( var a = 0; a < ToHide.length; a++ ) $("#"+ ToHide[a]).addClass("ResultHidden");
@@ -874,7 +878,7 @@
 					<option value="exotic" class="ClassExotic">Exotic</option>
 				</select>
 			</div>
-			<div class="Name" contenteditable="true">Enter Name</div>
+			<input type="text" class="Name" placeholder="Enter Name">
 		</div>
 		
 		<div id="Buttons">
